@@ -77,6 +77,9 @@ class AceyDucey:
         self.card1 = randint(1,14)
         self.card2 = randint(1,14)
 
+        if self.card1 > self.card2:
+            self.card1, self.card2 = self.card2, self.card1
+
         self.display(self.card1)
         self.display(self.card2)
 
