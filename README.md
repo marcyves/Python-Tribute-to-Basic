@@ -13,4 +13,5 @@ The purpose of this project `Python Tribute to Basic`is to revice this spirit by
 
 ## Games available
 
-  * [AceyDucey](https://www.atariarchives.org/basicgames/showpage.php?page=2)
+  * [AceyDucey](https://www.atariarchives.org/basicgames/showpage.php?page=2) a very simple card game as a start.
+  * [Awari](https://www.atariarchives.org/basicgames/showpage.php?page=6) the ancient African game. That's true old memories for me, I coded that 40 years ago on my ORIC-1!
