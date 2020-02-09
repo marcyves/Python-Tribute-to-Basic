@@ -39,21 +39,32 @@ class Awari :
 
 
     def printBoard(self):
+        print("     1    2    3    4    5    6")
+        print("   +----+----+----+----+----+----+")
         print("   ", end='')
         for i in range(12,6,-1):
-            print(self.board[i], end=' ')
-        print("")
-        print("{}              {}".format(self.board[13],self.board[6]))
+            print("| {} ".format(self.board[i]), end=' ')
+        print("|")
+        print("   +----+----+----+----+----+----+")
+        print(" {} |                             | {}".format(self.board[13],self.board[6]))
+        print("   +----+----+----+----+----+----+")
         print("   ", end='')
         for i in range(0,6):
-            print(self.board[i], end=' ')
-        print("")
+            print("| {} ".format(self.board[i]), end=' ')
+        print("|") 
+        print("   +----+----+----+----+----+----+")
+
+    def computerMove(self):
+        pass
 
     def playerMove(self):
         pit = 0
         while pit < 1 or pit > 6:
             try:
-                pit = int(input("\nYour move? => "))
+                pit = int(input("\nYour move? (0 to quit) => "))
+                if pit == 0:
+                    print("bye bye")
+                    break
                 if self.getBeans(pit) == 0:
                     pit = 0
                     print("Illegal move")
@@ -61,30 +72,33 @@ class Awari :
             except ValueError:
                 pit = 0
                 print("Again")
-        home = 7
 
-        k = pit
+        if pit == 0:
+            return False
+        else:
+            home = 7
 
-        # take all beans from pit played
-        beans = self.getBeans(pit)
-        self.clearPit(pit)
+            k = pit
 
-        # place beans in pits anticlockwise, starting on the next pit on the right
-        for i in range(beans, 0, -1):
-            pit += 1
-            if pit > 13:
-                pit = pit - 14
-            self.dropOneBean(pit)
-
-        # the last bean was dropped in an empty pit (now contains 1)
-        # beans from the opposite side are taken and placed in player's 'wari'
-        if self.getBeans(pit) == 1 and pit != 7 and pit != 14 and self.getBeans(14-pit) != 0:
-            self.dropBeans(home, self.getBeans(14-pit)+1)
+            # take all beans from pit played
+            beans = self.getBeans(pit)
             self.clearPit(pit)
-            self.clearPit(14-pit)
- 
 
+            # place beans in pits anticlockwise, starting on the next pit on the right
+            for i in range(beans, 0, -1):
+                pit += 1
+                if pit > 13:
+                    pit = pit - 14
+                self.dropOneBean(pit)
 
+            # the last bean was dropped in an empty pit (now contains 1)
+            # beans from the opposite side are taken and placed in player's 'wari'
+            if self.getBeans(pit) == 1 and pit != 7 and pit != 14 and self.getBeans(14-pit) != 0:
+                self.dropBeans(home, self.getBeans(14-pit)+1)
+                self.clearPit(pit)
+                self.clearPit(14-pit)
+
+            return True
 
 if __name__ == "__main__":
     game = Awari()
@@ -92,5 +106,7 @@ if __name__ == "__main__":
     while(True):
         game.printBoard()
 
-        game.playerMove()
+        if not game.playerMove():
+            break
 
+        game.computerMove()
