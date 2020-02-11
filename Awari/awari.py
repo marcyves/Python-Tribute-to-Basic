@@ -15,6 +15,9 @@
 
 class Awari :
     def __init__(self):
+        """
+            Initialise the game 
+        """
         print("\aAWARI")
         print("=====\n")
         self.board = [3,3,3,3,3,3,
@@ -26,19 +29,35 @@ class Awari :
 #            self.board[i] = i
 
     def clearPit(self, pit):
+        """
+            Routine to clear out pit number 'pit'
+        """
         self.board[pit - 1] = 0
 
     def getBeans(self, pit):
+        """
+            Routine to return the number of beans from pit number 'pit'
+        """
+
         return self.board[pit-1]
 
     def dropOneBean(self, pit):
+        """
+            Routine to drop 1 bean into pit number 'pit'
+        """
         self.board[pit - 1] += 1
 
     def dropBeans(self, pit, beans):
+        """
+            Routine to drop 'beans' beans into pit number 'pit'
+        """
         self.board[pit - 1] += beans
 
 
     def printBoard(self):
+        """
+            Routine to print the board and beans
+        """
         print("     1    2    3    4    5    6")
         print("   +----+----+----+----+----+----+")
         print("   ", end='')
@@ -55,6 +74,9 @@ class Awari :
         print("   +----+----+----+----+----+----+")
 
     def computerMove(self):
+        """
+            Routine to manage Computer's play
+        """
         if self.checkComputerSideIsNotEmpty():
             pass
             return True
@@ -63,6 +85,10 @@ class Awari :
             return False
 
     def checkPlayerSideIsNotEmpty(self):
+        """
+            Routine to check if the Player side pits contain any bean
+            if its side is empty, ends the game
+        """
         test = 0
         for i in range(0,6):
             test += self.board[i]
@@ -73,6 +99,10 @@ class Awari :
             return False
 
     def checkComputerSideIsNotEmpty(self):
+        """
+            Routine to check if the Computer side pits contain any bean
+            if its side is empty, ends the game
+        """
         test = 0
         for i in range(12,6,-1):
             test += self.board[i]
@@ -83,6 +113,10 @@ class Awari :
             return False
 
     def askPlayerMove(self):
+        """
+            Routine to ask safely in which pit the user wants to collect beans
+                checks validity of the pit number and that beans are present in the pit
+        """
         pit = 0
         while pit < 1 or pit > 6:
             try:
@@ -101,6 +135,11 @@ class Awari :
         return pit
 
     def playerMove(self):
+        """
+            Routine managing all user interactions and play
+            Returns True if the game can continue
+                    False otherwise
+        """
         if self.checkPlayerSideIsNotEmpty():
             pit = self.askPlayerMove()
 
