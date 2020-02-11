@@ -55,9 +55,34 @@ class Awari :
         print("   +----+----+----+----+----+----+")
 
     def computerMove(self):
-        pass
+        if self.checkComputerSideIsNotEmpty():
+            pass
+            return True
+        else:
+            print("The pits on my side are empty")
+            return False
 
-    def playerMove(self):
+    def checkPlayerSideIsNotEmpty(self):
+        test = 0
+        for i in range(0,6):
+            test += self.board[i]
+        
+        if test > 0:
+            return True
+        else:
+            return False
+
+    def checkComputerSideIsNotEmpty(self):
+        test = 0
+        for i in range(12,6,-1):
+            test += self.board[i]
+        
+        if test > 0:
+            return True
+        else:
+            return False
+
+    def askPlayerMove(self):
         pit = 0
         while pit < 1 or pit > 6:
             try:
@@ -73,32 +98,41 @@ class Awari :
                 pit = 0
                 print("Again")
 
-        if pit == 0:
-            return False
-        else:
-            home = 7
+        return pit
 
-            k = pit
+    def playerMove(self):
+        if self.checkPlayerSideIsNotEmpty():
+            pit = self.askPlayerMove()
 
-            # take all beans from pit played
-            beans = self.getBeans(pit)
-            self.clearPit(pit)
+            if pit == 0:
+                return False
+            else:
+                home = 7
 
-            # place beans in pits anticlockwise, starting on the next pit on the right
-            for i in range(beans, 0, -1):
-                pit += 1
-                if pit > 13:
-                    pit = pit - 14
-                self.dropOneBean(pit)
+                k = pit
 
-            # the last bean was dropped in an empty pit (now contains 1)
-            # beans from the opposite side are taken and placed in player's 'wari'
-            if self.getBeans(pit) == 1 and pit != 7 and pit != 14 and self.getBeans(14-pit) != 0:
-                self.dropBeans(home, self.getBeans(14-pit)+1)
+                # take all beans from pit played
+                beans = self.getBeans(pit)
                 self.clearPit(pit)
-                self.clearPit(14-pit)
 
-            return True
+                # place beans in pits anticlockwise, starting on the next pit on the right
+                for i in range(beans, 0, -1):
+                    pit += 1
+                    if pit > 13:
+                        pit = pit - 14
+                    self.dropOneBean(pit)
+
+                # the last bean was dropped in an empty pit (now contains 1)
+                # beans from the opposite side are taken and placed in player's 'wari'
+                if self.getBeans(pit) == 1 and pit != 7 and pit != 14 and self.getBeans(14-pit) != 0:
+                    self.dropBeans(home, self.getBeans(14-pit)+1)
+                    self.clearPit(pit)
+                    self.clearPit(14-pit)
+
+                return True
+        else:
+            print("All your pits are empty")
+            return False
 
 if __name__ == "__main__":
     game = Awari()
@@ -109,4 +143,7 @@ if __name__ == "__main__":
         if not game.playerMove():
             break
 
-        game.computerMove()
+        if not game.computerMove():
+            break
+    
+    print("Game over")
